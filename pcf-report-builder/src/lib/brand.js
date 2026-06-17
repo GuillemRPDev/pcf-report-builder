@@ -27,25 +27,44 @@ export const BRAND = {
   },
 };
 
-// Brand gradient stops, in order. The lifecycle bars sample colors along these
-// so the stages read as one continuous brand gradient.
-const GRADIENT_STOPS = [
-  BRAND.palette.pink,
-  BRAND.palette.orange,
-  BRAND.palette.coral,
-  BRAND.palette.navy,
-];
-
 // Interpolate the brand gradient into `count` hex colors.
-export function sampleGradient(count) {
-  if (count <= 1) return [GRADIENT_STOPS[0]];
-  const rgb = GRADIENT_STOPS.map(hexToRgb);
+export function sampleGradient(count, brand = BRAND) {
+  const stops = [
+    brand.palette.pink,
+    brand.palette.orange,
+    brand.palette.coral,
+    brand.palette.navy,
+  ];
+
+  if (count <= 1) return [stops[0]];
+  const rgb = stops.map(hexToRgb);
   const segments = rgb.length - 1;
   return Array.from({ length: count }, (_, i) => {
     const t = (i / (count - 1)) * segments;
     const idx = Math.min(Math.floor(t), segments - 1);
     return rgbToHex(lerpRgb(rgb[idx], rgb[idx + 1], t - idx));
   });
+}
+
+export function createBrandFromClient(client) {
+  return {
+    name: client.name,
+    palette: {
+      pink: client.primary_color,
+      orange: client.accent_color,
+      coral: client.primary_color,
+      navy: client.text_color,
+    },
+    ink: client.text_color,
+    paper: "#ffffff",
+    muted: "#6b7280",
+    hairline: "#e5e7eb",
+    logo: client.logo_url,
+    font: {
+      family: client.font_family,
+      bold: client.font_family,
+    },
+  };
 }
 
 function hexToRgb(hex) {

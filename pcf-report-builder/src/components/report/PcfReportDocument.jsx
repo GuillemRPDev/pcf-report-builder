@@ -1,7 +1,8 @@
 import { Document, Page, View, Text } from "@react-pdf/renderer";
-import { BRAND, sampleGradient, formatKg, formatPct, computeKpis } from "@/lib/pdf";
+import { sampleGradient } from "@/lib/brand";
+import { formatKg, formatPct, computeKpis } from "@/lib/format";
 import { UNIT } from "@/lib/pcf-stages";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 import { StageBarChart } from "./StageBarChart";
 
 /*
@@ -12,9 +13,10 @@ import { StageBarChart } from "./StageBarChart";
     3. Lifecycle chart
     4. Stage breakdown table
 */
-export function PcfReportDocument({ product, generatedAt }) {
+export function PcfReportDocument({ product, generatedAt, brand }) {
   const kpis = computeKpis(product);
-  const stageColors = sampleGradient(product.stages.length);
+  const stageColors = sampleGradient(product.stages.length, brand);
+  const styles = createStyles(brand);
   // generatedAt is a timestamp (ms) supplied by the caller (PdfDownloadButton),
   // kept stable there so this stays a pure render.
   const dateStr = new Date(generatedAt).toLocaleDateString("en-GB", {
@@ -26,7 +28,7 @@ export function PcfReportDocument({ product, generatedAt }) {
   return (
     <Document
       title={`PCF Report - ${product.product}`}
-      author={BRAND.name}
+      author={brand.name}
       subject="Product Carbon Footprint (ISO 14067)"
     >
       {/* ---------- Page 1: Cover ---------- */}
@@ -34,11 +36,11 @@ export function PcfReportDocument({ product, generatedAt }) {
         <View style={styles.cover}>
           <View>
             <View style={styles.coverGradientBar}>
-              {sampleGradient(24).map((c, i) => (
+              {sampleGradient(24, brand).map((c, i) => (
                 <View key={i} style={{ flex: 1, backgroundColor: c }} />
               ))}
             </View>
-            <Text style={[styles.coverEyebrow, { marginTop: 24 }]}>{BRAND.name}</Text>
+            <Text style={[styles.coverEyebrow, { marginTop: 24 }]}>{brand.name}</Text>
           </View>
 
           <View>
@@ -72,7 +74,7 @@ export function PcfReportDocument({ product, generatedAt }) {
 
       {/* ---------- Page 2: Summary + chart + stage table ---------- */}
       <Page size="A4" style={styles.page}>
-        <Footer product={product} />
+        <Footer product={product} brand={brand} styles={styles} />
 
         <Text style={styles.sectionTitle}>Summary</Text>
         <Text style={styles.sectionIntro}>
@@ -80,14 +82,15 @@ export function PcfReportDocument({ product, generatedAt }) {
         </Text>
 
         <View style={styles.kpiRow}>
-          <Kpi label="Total footprint" value={kpis.total.toFixed(2)} unit={UNIT} />
-          <Kpi label="Per" value="1" unit={product.functionalUnit} />
+          <Kpi styles={styles} label="Total footprint" value={kpis.total.toFixed(2)} unit={UNIT} />
+          <Kpi styles={styles} label="Per" value="1" unit={product.functionalUnit} />
           <Kpi
+            styles={styles}
             label="Largest stage"
             value={kpis.largestShare}
             unit={kpis.largestStage.label}
           />
-          <Kpi label="Lifecycle stages" value={String(kpis.stageCount)} unit="ISO 14067" />
+          <Kpi styles={styles} label="Lifecycle stages" value={String(kpis.stageCount)} unit="ISO 14067" />
         </View>
 
         <Text style={styles.sectionTitle}>Emissions by lifecycle stage</Text>
@@ -95,7 +98,12 @@ export function PcfReportDocument({ product, generatedAt }) {
           Each bar is one lifecycle stage, colored along the brand gradient.
         </Text>
         <View style={{ marginBottom: 22 }}>
-          <StageBarChart stages={product.stages} colors={stageColors} width={499} />
+          <StageBarChart
+            stages={product.stages}
+            colors={stageColors}
+            width={499}
+            brand={brand}
+          />
         </View>
 
         <View style={styles.table}>
@@ -126,7 +134,7 @@ export function PcfReportDocument({ product, generatedAt }) {
 
       {/* ---------- Page 3: Detailed components + methodology ---------- */}
       <Page size="A4" style={styles.page}>
-        <Footer product={product} />
+        <Footer product={product} brand={brand} styles={styles} />
 
         <Text style={styles.sectionTitle}>Detailed breakdown</Text>
         <Text style={styles.sectionIntro}>
@@ -150,7 +158,7 @@ export function PcfReportDocument({ product, generatedAt }) {
               </View>
               {stage.components.map((c) => (
                 <View key={c.code} style={styles.tr}>
-                  <Text style={[styles.td, styles.cellCode, { color: BRAND.muted }]}>
+<Text style={[styles.td, styles.cellCode, { color: brand.muted }]}> 
                     {c.code}
                   </Text>
                   <Text style={[styles.td, styles.cellName]}>{c.label}</Text>
@@ -187,8 +195,7 @@ export function PcfReportDocument({ product, generatedAt }) {
     </Document>
   );
 }
-
-function Kpi({ label, value, unit }) {
+function Kpi({ styles, label, value, unit }) {
   return (
     <View style={styles.kpiCard}>
       <Text style={styles.kpiLabel}>{label}</Text>
@@ -198,15 +205,13 @@ function Kpi({ label, value, unit }) {
   );
 }
 
-function Footer({ product }) {
+function Footer({ product, brand, styles }) {
   return (
     <View style={styles.footer} fixed>
       <Text>
-        {BRAND.name} · Product Carbon Footprint · {product.product}
+        {brand.name} · Product Carbon Footprint · {product.product}
       </Text>
-      <Text
-        render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
-      />
+      <Text render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
     </View>
   );
 }

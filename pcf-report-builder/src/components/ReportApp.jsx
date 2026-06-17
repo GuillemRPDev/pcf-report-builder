@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/Select";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { BRAND, sampleGradient } from "@/lib/brand";
+import { ClientPicker } from "@/components/ClientPicker";
+import { createBrandFromClient, sampleGradient } from "@/lib/brand";
 import { computeKpis, formatPct } from "@/lib/format";
 import { UNIT } from "@/lib/pcf-stages";
 
@@ -41,15 +42,18 @@ const PdfDownloadButton = dynamic(
   }
 );
 
-export default function ReportApp({ products }) {
+export default function ReportApp({ products, clients }) {
   const [index, setIndex] = useState(0);
+  const [selectedClientSlug, setSelectedClientSlug] = useState(clients[0]?.slug ?? "");
   const selectId = useId();
   const product = products[index];
 
+  const client = clients.find((item) => item.slug === selectedClientSlug) ?? clients[0];
+  const brand = createBrandFromClient(client);
   const kpis = useMemo(() => computeKpis(product), [product]);
   const stageColors = useMemo(
-    () => sampleGradient(product.stages.length),
-    [product]
+    () => sampleGradient(product.stages.length, brand),
+    [product, brand]
   );
   const maxStage = Math.max(...product.stages.map((s) => s.total));
   const componentCount = product.stages.reduce(
@@ -67,12 +71,12 @@ export default function ReportApp({ products }) {
             aria-hidden="true"
             className="mb-4 h-1.5 w-24 rounded-full"
             style={{
-              backgroundImage: `linear-gradient(to right, ${BRAND.palette.pink}, ${BRAND.palette.orange}, ${BRAND.palette.coral}, ${BRAND.palette.navy})`,
+              backgroundImage: `linear-gradient(to right, ${brand.palette.pink}, ${brand.palette.orange}, ${brand.palette.coral}, ${brand.palette.navy})`,
             }}
           />
           <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             <Leaf className="size-3.5" aria-hidden="true" />
-            {BRAND.name} · ISO 14067
+            {brand.name} · ISO 14067
           </p>
           <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
             Product Carbon Footprint
@@ -95,28 +99,35 @@ export default function ReportApp({ products }) {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
-              <div className="space-y-2">
-                <label htmlFor={selectId} className="text-sm font-medium">
-                  Product
-                </label>
-                <Select
-                  value={String(index)}
-                  onValueChange={(v) => setIndex(Number(v))}
-                >
-                  <SelectTrigger id={selectId} className="w-full">
-                    <SelectValue placeholder="Select a product" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {products.map((p, i) => (
-                      <SelectItem key={p.product} value={String(i)}>
-                        {p.product}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <p className="text-xs text-muted-foreground">
-                  Functional unit: {product.functionalUnit}
-                </p>
+                  <div className="space-y-4">
+                <ClientPicker
+                  clients={clients}
+                  value={selectedClientSlug}
+                  onChange={setSelectedClientSlug}
+                />
+                <div className="space-y-2">
+                  <label htmlFor={selectId} className="text-sm font-medium">
+                    Product
+                  </label>
+                  <Select
+                    value={String(index)}
+                    onValueChange={(v) => setIndex(Number(v))}
+                  >
+                    <SelectTrigger id={selectId} className="w-full">
+                      <SelectValue placeholder="Select a product" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {products.map((p, i) => (
+                        <SelectItem key={p.product} value={String(i)}>
+                          {p.product}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground">
+                    Functional unit: {product.functionalUnit}
+                  </p>
+                </div>
               </div>
 
               <dl className="space-y-2 border-t pt-4 text-sm">
@@ -126,7 +137,7 @@ export default function ReportApp({ products }) {
               </dl>
 
               <div className="space-y-2 border-t pt-4">
-                <PdfDownloadButton product={product} />
+                <PdfDownloadButton product={product} brand={brand} />
                 <p className="text-center text-xs text-muted-foreground">
                   Cover · summary &amp; chart · detailed breakdown
                 </p>

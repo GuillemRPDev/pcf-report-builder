@@ -12,7 +12,7 @@ import { PcfReportDocument } from "./PcfReportDocument";
   parent (ReportApp). PDFDownloadLink builds the PDF in the browser and exposes
   a `loading` flag while it renders.
 */
-export default function PdfDownloadButton({ product }) {
+export default function PdfDownloadButton({ product, brand }) {
   const fileName = `pcf-report-${slugify(product.product)}.pdf`;
   // Stable "generated at" timestamp: lazy state initializer runs once, so the
   // date stays fixed across re-renders (and satisfies React's purity rule).
@@ -20,7 +20,13 @@ export default function PdfDownloadButton({ product }) {
 
   return (
     <PDFDownloadLink
-      document={<PcfReportDocument product={product} generatedAt={generatedAt} />}
+      document={
+        <PcfReportDocument
+          product={product}
+          generatedAt={generatedAt}
+          brand={brand}
+        />
+      }
       fileName={fileName}
     >
       {({ loading }) => (

@@ -1,5 +1,4 @@
 import { Svg, Rect, Line, Text as SvgText } from "@react-pdf/renderer";
-import { BRAND } from "@/lib/pdf";
 
 /*
   Horizontal bar chart of emissions per lifecycle stage, drawn with react-pdf
@@ -10,8 +9,9 @@ import { BRAND } from "@/lib/pdf";
     stages  - [{ label, total }] in lifecycle order
     colors  - hex color per stage (sampled from the brand gradient)
     width   - drawing width in pt
+    brand   - optional brand colors/fonts for labels
 */
-export function StageBarChart({ stages, colors, width = 500 }) {
+export function StageBarChart({ stages, colors, width = 500, brand }) {
   const leftGutter = 92; // room for stage labels
   const valueGutter = 56; // room for value text after each bar
   const rowHeight = 26;
@@ -20,6 +20,9 @@ export function StageBarChart({ stages, colors, width = 500 }) {
   const barAreaWidth = width - leftGutter - valueGutter;
   const height = stages.length * rowHeight + topPad * 2;
   const max = Math.max(...stages.map((s) => s.total), 0);
+  const ink = brand?.ink ?? "#000000";
+  const fontFamily = brand?.font?.family ?? "Helvetica";
+  const fontBold = brand?.font?.bold ?? fontFamily;
 
   // Pre-compute geometry once so bars and labels stay in sync.
   const rows = stages.map((stage, i) => {
@@ -37,7 +40,7 @@ export function StageBarChart({ stages, colors, width = 500 }) {
         x2={leftGutter}
         y2={height - topPad}
         strokeWidth={1}
-        stroke={BRAND.ink}
+        stroke={ink}
       />
       {/* bars */}
       {rows.map(({ stage, color, cy, barWidth }) => (
@@ -58,7 +61,7 @@ export function StageBarChart({ stages, colors, width = 500 }) {
           x={leftGutter - 6}
           y={cy + 3}
           textAnchor="end"
-          style={{ fontSize: 8, fontFamily: BRAND.font.family, fill: BRAND.ink }}
+          style={{ fontSize: 8, fontFamily, fill: ink }}
         >
           {stage.label}
         </SvgText>
@@ -69,7 +72,7 @@ export function StageBarChart({ stages, colors, width = 500 }) {
           key={`val-${stage.label}`}
           x={leftGutter + barWidth + 5}
           y={cy + 3}
-          style={{ fontSize: 8, fontFamily: BRAND.font.bold, fill: BRAND.ink }}
+          style={{ fontSize: 8, fontFamily: fontBold, fill: ink }}
         >
           {stage.total.toFixed(1)}
         </SvgText>
