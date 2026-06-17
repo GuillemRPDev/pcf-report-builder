@@ -34,7 +34,7 @@ Una aplicació web que genera informes de l'empremta de carboni en PDF, a partir
 
 ## Tecnologies que he fet servir
 
-**Framework** Next.js. Fàcil de fer webs, bona per servidors.
+**Framework** Next.js. Fàcil de fer webs, bona per servidors (Tot i que no l'havia fet servir gaire abans, penso que és important fer la prova amb next, ja que es la tecnología que feu servir).
 **Llenguatge** JavaScript. Obligatori per la prova, a més és simple, no cal configurar tant.
 **PDF** @react-pdf/renderer. Faig el PDF des del mateix codi, sense complicacions. A més és la llibrería més usada a react per generar PDF.
 **Validació** Zod. Comprova que les dades siguin correctes, proposada al enunciat del repte.
