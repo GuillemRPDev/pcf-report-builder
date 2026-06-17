@@ -22,12 +22,20 @@ export const metadata = {
     "Generate branded Product Carbon Footprint (ISO 14067) PDF reports from sample data.",
 };
 
+// Set the theme class before first paint to avoid a light/dark flash (FOUC).
+// Reads the saved choice, falling back to the OS preference.
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}catch(e){}})();`;
+
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
