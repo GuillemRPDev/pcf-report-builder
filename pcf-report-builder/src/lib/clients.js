@@ -27,6 +27,17 @@ const FALLBACK_CLIENTS = [
     font_family: "Helvetica",
     created_at: new Date().toISOString(),
   },
+  {
+    id: "00000000-0000-0000-0000-000000000002",
+    name: "Placeholder",
+    slug: "placeholder",
+    logo_url: "https://placehold.co/80x80?text=Placeholder",
+    primary_color: "#287e3e",
+    accent_color: "#46bda9",
+    text_color: "#111827",
+    font_family: "Helvetica",
+    created_at: new Date().toISOString(),
+  },
 ];
 
 export async function getClients() {

@@ -5,7 +5,7 @@ import { Logo } from "@/components/Logo";
   Marketing footer. Links are placeholders (#) — this is a demo product site.
 */
 const COLUMNS = [
-  { title: "Product", links: ["Features", "Pricing", "Changelog", "Roadmap"] },
+  { title: "Product", links: ["Features", "Changelog", "Roadmap"] },
   { title: "Company", links: ["About", "Careers", "Contact", "Blog"] },
   { title: "Legal", links: ["Privacy", "Terms", "Security", "Cookies"] },
 ];

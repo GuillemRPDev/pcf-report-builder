@@ -199,60 +199,9 @@ export function Landing() {
         </div>
       </section>
 
-      {/* ---------- pricing ---------- */}
-      <section
-        id="pricing"
-        aria-labelledby="pricing-title"
-        className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6"
-      >
-        <div className="max-w-2xl">
-          <h2 id="pricing-title" className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Simple pricing
-          </h2>
-          <p className="mt-3 text-muted-foreground">
-            Plans are illustrative — this is a demo project.
-          </p>
-        </div>
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          {PLANS.map((plan) => (
-            <div
-              key={plan.name}
-              className={`relative rounded-2xl border p-6 ${
-                plan.featured ? "border-primary shadow-lg ring-1 ring-primary/20" : "bg-card"
-              }`}
-            >
-              {plan.featured && (
-                <Badge className="absolute -top-3 left-6">Most popular</Badge>
-              )}
-              <p className="font-semibold">{plan.name}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{plan.blurb}</p>
-              <p className="mt-4 flex items-baseline gap-1">
-                <span className="text-3xl font-semibold tracking-tight">{plan.price}</span>
-                <span className="text-sm text-muted-foreground">{plan.cadence}</span>
-              </p>
-              <Button
-                asChild
-                className="mt-5 w-full"
-                variant={plan.featured ? "default" : "outline"}
-              >
-                <Link href="/login">Choose {plan.name}</Link>
-              </Button>
-              <ul className="mt-6 space-y-2.5 text-sm">
-                {plan.features.map((feat) => (
-                  <li key={feat} className="flex items-center gap-2">
-                    <Check className="size-4 shrink-0 text-primary" aria-hidden="true" />
-                    {feat}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ---------- CTA band ---------- */}
       <section className="mx-auto w-full max-w-6xl px-4 pb-20 sm:px-6">
-        <div className="relative overflow-hidden rounded-3xl bg-zinc-950 px-8 py-16 text-center text-white">
+        <div className="relative overflow-hidden rounded-3xl bg-zinc-950 px-8 py-16 text-center text-white mt-18">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 opacity-25 blur-2xl"
