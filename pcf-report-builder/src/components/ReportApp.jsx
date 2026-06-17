@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { BRAND, sampleGradient } from "@/lib/brand";
 import { computeKpis, formatPct } from "@/lib/format";
 import { UNIT } from "@/lib/pcf-stages";
@@ -63,33 +62,27 @@ export default function ReportApp({ products }) {
       <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:py-14">
         {/* ---------- header ---------- */}
         <header className="mb-10">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              {/* decorative brand gradient accent */}
-              <div
-                aria-hidden="true"
-                className="mb-4 h-1.5 w-24 rounded-full"
-                style={{
-                  backgroundImage: `linear-gradient(to right, ${BRAND.palette.pink}, ${BRAND.palette.orange}, ${BRAND.palette.coral}, ${BRAND.palette.navy})`,
-                }}
-              />
-              <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                <Leaf className="size-3.5" aria-hidden="true" />
-                {BRAND.name} · ISO 14067
-              </p>
-              <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-                Product Carbon Footprint
-                <br className="hidden sm:block" /> Report Builder
-              </h1>
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                Pick a product to preview its cradle-to-grave footprint by
-                lifecycle stage, then export a branded PDF. Figures are
-                pre-calculated — this tool presents them, it doesn&apos;t compute
-                them.
-              </p>
-            </div>
-            <ThemeToggle />
-          </div>
+          {/* decorative brand gradient accent */}
+          <div
+            aria-hidden="true"
+            className="mb-4 h-1.5 w-24 rounded-full"
+            style={{
+              backgroundImage: `linear-gradient(to right, ${BRAND.palette.pink}, ${BRAND.palette.orange}, ${BRAND.palette.coral}, ${BRAND.palette.navy})`,
+            }}
+          />
+          <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <Leaf className="size-3.5" aria-hidden="true" />
+            {BRAND.name} · ISO 14067
+          </p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+            Product Carbon Footprint
+            <br className="hidden sm:block" /> Report Builder
+          </h1>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Pick a product to preview its cradle-to-grave footprint by lifecycle
+            stage, then export a branded PDF. Figures are pre-calculated — this
+            tool presents them, it doesn&apos;t compute them.
+          </p>
         </header>
 
         {/* ---------- two-pane layout: config (sticky) + preview ---------- */}
