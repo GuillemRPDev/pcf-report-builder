@@ -1,25 +1,39 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /*
-  Light/dark toggle. The no-flash script in layout.jsx sets the initial .dark
-  class before paint; this just keeps the icon in sync and persists the choice.
-  Renders a stable Moon icon on the server + first client render (theme === null)
-  so hydration matches, then corrects after mount.
+  Light/dark toggle. The no-flash script in layout.jsx applies the initial .dark
+  class before paint. We treat the <html> class as the source of truth and read
+  it via useSyncExternalStore (observing class changes), so there's no
+  effect/setState mirroring and hydration stays correct.
 */
-export function ThemeToggle() {
-  const [theme, setTheme] = useState(null);
+function subscribe(onChange) {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+  return () => observer.disconnect();
+}
 
-  useEffect(() => {
-    setTheme(document.documentElement.classList.contains("dark") ? "dark" : "light");
-  }, []);
+function getSnapshot() {
+  return document.documentElement.classList.contains("dark") ? "dark" : "light";
+}
+
+// Server render has no DOM; default to light (matches the Moon icon).
+function getServerSnapshot() {
+  return "light";
+}
+
+export function ThemeToggle() {
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const isDark = theme === "dark";
 
   function toggle() {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
+    const next = isDark ? "light" : "dark";
     document.documentElement.classList.toggle("dark", next === "dark");
     try {
       localStorage.setItem("theme", next);
@@ -28,7 +42,6 @@ export function ThemeToggle() {
     }
   }
 
-  const isDark = theme === "dark";
   return (
     <Button
       variant="outline"
