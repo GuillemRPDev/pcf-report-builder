@@ -3,16 +3,16 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { FileText, Flame, Layers, ListTree, Leaf } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/Select";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
 import { BRAND, sampleGradient } from "@/lib/brand";
 import { computeKpis, formatPct } from "@/lib/format";
 import { UNIT } from "@/lib/pcf-stages";

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Download, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { PcfReportDocument } from "./PcfReportDocument";
 
 /*
