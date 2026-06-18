@@ -1,15 +1,10 @@
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
+import { FOOTER_COLUMNS } from "@/data/constants";
 
 /*
   Marketing footer. Links are placeholders (#) — this is a demo product site.
 */
-const COLUMNS = [
-  { title: "Product", links: ["Features", "Changelog", "Roadmap"] },
-  { title: "Company", links: ["About", "Careers", "Contact", "Blog"] },
-  { title: "Legal", links: ["Privacy", "Terms", "Security", "Cookies"] },
-];
-
 export function SiteFooter() {
   return (
     <footer className="border-t bg-muted/30">
@@ -21,7 +16,7 @@ export function SiteFooter() {
             in minutes, not weeks.
           </p>
         </div>
-        {COLUMNS.map((col) => (
+        {FOOTER_COLUMNS.map((col) => (
           <div key={col.title}>
             <p className="text-sm font-semibold">{col.title}</p>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">

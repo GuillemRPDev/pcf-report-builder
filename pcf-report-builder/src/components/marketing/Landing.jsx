@@ -1,85 +1,13 @@
 import Link from "next/link";
-import {
-  BarChart3,
-  Check,
-  Download,
-  FileCheck2,
-  Palette,
-  Sparkles,
-} from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
 import { BRAND } from "@/lib/brand";
+import { FEATURES, STEPS } from "@/data/constants";
 
 const GRADIENT = `linear-gradient(115deg, ${BRAND.palette.pink}, ${BRAND.palette.orange}, ${BRAND.palette.coral}, ${BRAND.palette.navy})`;
-
-const FEATURES = [
-  {
-    icon: FileCheck2,
-    title: "ISO 14067, validated",
-    body: "Every dataset is parsed and checked on import — stage totals must reconcile with their components, so a bad file fails loudly instead of rendering wrong numbers.",
-  },
-  {
-    icon: Palette,
-    title: "On-brand by default",
-    body: "Your palette, typography and logo live in one config. Reports come out looking like your brand, not a generic template.",
-  },
-  {
-    icon: BarChart3,
-    title: "Lifecycle breakdown",
-    body: "Cradle-to-grave emissions across six stages, with a per-component inventory and a chart that reads at a glance.",
-  },
-  {
-    icon: Download,
-    title: "Export in one click",
-    body: "A pixel-true PDF rendered in the browser — cover, summary, chart and a detailed breakdown, ready to send to a client.",
-  },
-];
-
-const STEPS = [
-  {
-    n: "01",
-    title: "Connect your data",
-    body: "Drop in a PCF CSV exported per ISO 14067. We map it to a typed model and validate it.",
-  },
-  {
-    n: "02",
-    title: "Preview the footprint",
-    body: "See headline KPIs and the lifecycle-stage breakdown update live as you pick a product.",
-  },
-  {
-    n: "03",
-    title: "Export the report",
-    body: "Generate a branded, multi-page PDF in one click — no design tooling required.",
-  },
-];
-
-const PLANS = [
-  {
-    name: "Starter",
-    price: "€0",
-    cadence: "/mo",
-    blurb: "For trying it out.",
-    features: ["1 brand profile", "Sample dataset", "PDF export", "Community support"],
-  },
-  {
-    name: "Team",
-    price: "€49",
-    cadence: "/mo",
-    blurb: "For sustainability teams.",
-    features: ["Unlimited products", "Custom branding", "Section templates", "Priority support"],
-    featured: true,
-  },
-  {
-    name: "Enterprise",
-    price: "Let's talk",
-    cadence: "",
-    blurb: "For large reporting programs.",
-    features: ["SSO & roles", "Live data sources", "Audit trail", "Dedicated SLA"],
-  },
-];
 
 export function Landing() {
   return (

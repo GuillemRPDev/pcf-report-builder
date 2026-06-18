@@ -95,7 +95,8 @@ export function PcfReportDocument({ product, generatedAt, brand }) {
 
         <Text style={styles.sectionTitle}>Emissions by lifecycle stage</Text>
         <Text style={styles.sectionIntro}>
-          Each bar is one lifecycle stage, colored along the brand gradient.
+          Each bar is one lifecycle stage&apos;s share of the total, sorted smallest to
+          largest and colored along the brand gradient.
         </Text>
         <View style={{ marginBottom: 22 }}>
           <StageBarChart
