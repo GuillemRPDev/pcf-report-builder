@@ -3,17 +3,13 @@ import { ArrowLeft, Check } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { BRAND } from "@/lib/brand";
+import { LOGIN_POINTS } from "@/data/constants";
 
 export const metadata = {
   title: "Log in · Mappa PCF",
 };
 
 const GRADIENT = `linear-gradient(140deg, ${BRAND.palette.pink}, ${BRAND.palette.orange}, ${BRAND.palette.coral}, ${BRAND.palette.navy})`;
-const POINTS = [
-  "ISO 14067 data, validated on import",
-  "On-brand, multi-page PDF export",
-  "Lifecycle-stage breakdown charts",
-];
 
 // Decorative split auth screen: brand panel (desktop) + the demo sign-in form.
 export default function LoginPage() {
@@ -34,7 +30,7 @@ export default function LoginPage() {
             Branded carbon reports, straight from your PCF data.
           </p>
           <ul className="mt-8 space-y-3 text-sm text-zinc-300">
-            {POINTS.map((p) => (
+            {LOGIN_POINTS.map((p) => (
               <li key={p} className="flex items-center gap-2.5">
                 <span
                   className="inline-flex size-5 items-center justify-center rounded-full text-white"
